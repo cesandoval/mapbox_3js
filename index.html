@@ -58,19 +58,6 @@
     .elev:hover #elevation {
         display:block;
     }
-    #sidebar{
-        position: absolute;
-        width: 300px;
-        background: white;
-        border-radius:6px;
-        box-shadow:0px 0px 6px 0px rgba(0,0,0,0.5);
-        right: 0;
-        bottom:0;
-        margin:10px;
-        z-index: 99;
-        overflow:hidden;
-        user-select:none;
-    }
 
     .elev canvas {
         cursor: crosshair;
@@ -83,20 +70,6 @@
         cursor:-webkit-grabbing;
     }
 
-    #elevation {
-        position:absolute;
-        background:#fff;
-        color:#333;
-        padding:4px;
-        z-index:100;
-        pointer-events:none;
-        display:none;
-        border-radius:2px;
-    }
-
-    #elevation:after {
-        content:' m';
-    }
 
     #compass {
         perspective:100px;
@@ -130,36 +103,6 @@
         display:none;
     }
 
-    #viewshed {
-        display:block;
-        height:180px;
-    }
-    .leaflet-control {
-        display:none;
-    }
-    .leaflet-div-icon{
-        background:none;
-        transition:all 0.2s;
-        pointer-events:none;
-        opacity:0.75;
-    }
-    .dottedline {
-      width:1500px;
-      height:0px;
-      border-top:1px dotted #999;
-      margin-top: 750px;
-      position:absolute;
-    }
-    .dottedline+.dottedline {
-      height:1500px;
-      width:0px;
-      margin-top:0px;
-      border-left:1px dotted #aaa;
-      margin-left: 750px;
-    }
-    .leaflet-container {
-        cursor:crosshair;
-    }
 
     #caption {
         color:orange;
@@ -431,13 +374,6 @@
 
     function makeMesh([data, [z,x,y]]){
         meshes++
-        // if (Math.floor(getZoom()) !== z) {
-        //     tilesToGet--
-        //     //worker.postMessage({restore })
-
-        //     console.log('abort makemesh')
-        //     return
-        // }
 
         var tileSize = basePlaneDimension/(Math.pow(2,z));
         var vertices = 128;
