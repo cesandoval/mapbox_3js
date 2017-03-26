@@ -113,11 +113,33 @@ function setView(controls,location){
                 return parseFloat(str)
             }
         );
+    console.log(hash)
+
     if (hash.length === 5){
         [zoom, lat, lng, bearing, pitch] = hash
 
         lat = '40.7128';
         lng = '-74.0059';
+        var pxCoords = project([lng,lat]);
+        controls.target.copy(pxCoords);
+
+        var distance = Math.pow(0.5,(zoom-4))*12000;
+        bearing = radicalize(bearing);
+        pitch = radicalize(pitch);
+        var c={};
+        c.x = pxCoords.x-Math.sin(bearing)*Math.sin(pitch)*distance;
+        c.z = pxCoords.z+Math.cos(bearing)*Math.sin(pitch)*distance;
+
+        c.y = Math.cos(pitch)*distance
+        controls.object.position.copy(c)
+    } else {
+        [zoom, lat, lng, bearing, pitch] = hash
+
+        lat = '40.7128';
+        lng = '-74.0059';
+        zoom = 15.9228;
+        bearing = 0; 
+        pitch = 0.1; 
         var pxCoords = project([lng,lat]);
         controls.target.copy(pxCoords);
 

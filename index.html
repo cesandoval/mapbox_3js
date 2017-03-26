@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Terra</title>
+<title>3JS-Mapbox</title>
     <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
@@ -290,7 +290,6 @@
 
         var cb = e.data;
         var queue = cb.getTiles[0].length;
-        console.log(cb.getTiles)
         if (queue>0) {
             getTiles(cb.getTiles);
             updateTileVisibility();
