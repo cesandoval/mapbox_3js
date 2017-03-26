@@ -290,7 +290,7 @@
 
         var cb = e.data;
         var queue = cb.getTiles[0].length;
-
+        console.log(cb.getTiles)
         if (queue>0) {
             getTiles(cb.getTiles);
             updateTileVisibility();
@@ -461,27 +461,6 @@ function updateTileVisibility(){
         else child.visible = false;
     }
 }
-// SE Angola
-//Jotunheimen
-//Morocco
-//Ngorongoro craters, Tanzania
-//Volcano, New Zealand
-//Lac Bleu, pyrenees
-
-// #1057.9583/-5401.4846/1062.8568/-5402.1971/8.2853
-// #-8068.3074/594.5837/-8062.9915/590.7288/9.0380 teton wilderness area
-
-// #-21980.7104/-9575.5896/-21973.4357/-9578.5276/10.7986 washington
-// #-22069.6611/-9430.6221/-22061.5953/-9437.7232/18.4163 mt st helens
-// #1419.2888/-9562.7037/1417.2514/-9553.8168/13.5942 interlaken
-// #31439.5768/7724.8767/31450.0026/7726.0766/14.6333 Mt. Taranaki
-// #2387.2224/2758.9961/2377.5172/2779.7331/31.5132 lubango escarpment
-// #-21654.3374/-6550.8307/-21657.2202/-6556.2204/8.4127 santa cruz island
-// #-20310.1121/-7024.0632/-20303.6103/-7019.2996/11.0939 horseshoe bend
-// #-13234.9792/10718.8008/-13222.4889/10722.5082/17.9328 glacier grey
-// #4870.5649/-7210.0027/4868.2187/-7208.9957/3.5140 greek archipelago
-
-// #-20136.8970/-7188.3681/-20135.9974/-7187.4271/4.7215 glen canyon dam
 </script>
 
 </body>
