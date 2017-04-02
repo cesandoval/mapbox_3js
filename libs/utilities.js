@@ -122,9 +122,6 @@ function setHash(){
     location.hash = (hash);
 
     var lngLat = getCenter();
-    document.querySelector('#lnglat').innerHTML = lngLat;
-
-    markerx.setLatLng(lngLat.reverse());
 
 }
 
