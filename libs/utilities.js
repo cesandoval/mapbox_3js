@@ -105,6 +105,29 @@ function resolveSeams(data, neighborTiles, [z,x,y]){
 }
 
 
+function setHash(){
+
+    var lngLat = 
+    [roundTo(getZoom(),4)]
+    .concat(getCenter().reverse());
+
+    lngLat
+    .push(-deradicalize(controls.getAzimuthalAngle()),deradicalize(controls.getPolarAngle()))
+
+    hash= slashify(lngLat)
+    // var target = [controls.target.x, controls.target.z];
+    // var camera = [controls.object.position.x,controls.object.position.z, controls.object.position.y]
+    // var hash = target.concat(camera);
+    // hash = slashify(hash.map(function(num){return parseFloat(num).toFixed(4)}));
+    location.hash = (hash);
+
+    var lngLat = getCenter();
+    document.querySelector('#lnglat').innerHTML = lngLat;
+
+    markerx.setLatLng(lngLat.reverse());
+
+}
+
 function setView(controls,location){
     var hash = location
         .replace('#','')
@@ -115,9 +138,6 @@ function setView(controls,location){
         );
     if (hash.length === 5){
         [zoom, lat, lng, bearing, pitch] = hash
-
-        lat = '40.7128';
-        lng = '-74.0059';
         var pxCoords = project([lng,lat]);
         controls.target.copy(pxCoords);
 

@@ -214,7 +214,47 @@
     <div id='pivot'>
         <div id='grid'></div>
     </div>
+<div id="sidebar" class='z100'>
+    <div id='viewshed' class='clearfix'>
+        <span class='pin-topleft z100 code dark fill-black pad0' id='caption'></span>
 
+        <span class='pin-bottomright z100 code dark margin0 fill-black pad0' id='lnglat'></span>
+    </div>
+    <div class='keyline-bottom clearfix'>
+        <div class='small uppercase fl pad1 quiet'>Revolve</div>
+        <div class='rounded-toggle short inline fr'>
+            <input id='revolveoff' type='radio' name='rtoggle' value='revolveoff' onclick='controls.autoRotate=false' checked='checked'>
+            <label for='revolveoff'>OFF</label>
+            <input id='revolveon' type='radio' name='rtoggle' value='revolveon' onclick='controls.autoRotate=true'>
+            <label for='revolveon'>ON</label>
+        </div>
+    </div>
+    <div class='keyline-bottom clearfix '>
+        <div class='small uppercase fl pad1 quiet'>Elevation inspector</div>
+        <div class='rounded-toggle short inline fr'>
+            <input id='labeloff' type='radio' name='elev' value='labeloff' onclick='toggleElevation()' checked='checked'>
+            <label for='labeloff'>OFF</label>
+            <input id='labelon' type='radio' name='elev' value='labelon' onclick='toggleElevation()'>
+            <label for='labelon'>ON</label>
+        </div>
+    </div>
+    <div class='pad1  fl col5 clearfix' id='adjustcontrast'>
+        <span class='small uppercase quiet'>Contrast</span>
+
+        <input id="contrast" class='dragger hidden' value="100" />
+    </div>
+    <div class='pad1 fl keyline-left clearfix' style='width:134px' id='adjustbrightness'>
+        <span class='small uppercase quiet'>Brightness</span>
+        <input id="brightness" class='dragger hidden' value="100"/>
+    </div>
+    <div class='pad1 col5 clearfix hidden' id='adjustsaturation'>
+        <span class='small uppercase'>RESET</span>
+        <input id="saturation" value="100" />
+    </div>
+    <div class='pad1 keyline-right clearfix inline fr filterreset' onclick='resetFilter()'>
+        <span class='icon rotate'></span>
+    </div>
+</div>
 <div id="webgl">
     <div id='elevation'></div>
     <div class='spinner pad1 z100' id='progress'></div>
@@ -225,6 +265,7 @@
 <script src="libs/sm.js" note='THIS WAS MODIFIED TO PROJECT TO DECIMAL PIXELS'></script>
 
 <script src= 'libs/utilities.js'></script>
+<script src="components/sidebar.js"></script>
 <script src="libs/three.min.js"></script>
 <script src= 'libs/app.js'></script>
 <script src="libs/OrbitControls.js"></script>
@@ -293,7 +334,6 @@
         var intersect = raycaster.intersectObjects(scene.children)[0];
         var pt = intersect.point;
         var latitude = (mercator.ll([0, pt.z+basePlaneDimension/2],0))[1]
-
         var metersPerPixel = mPerPixel(latitude, basePlaneDimension/(Math.pow(2,Math.floor(getZoom()))), Math.floor(getZoom()))
 
 
@@ -316,7 +356,7 @@
     var inspectElevation = false;
 
     function assembleUrl(img, coords){
-        // console.log(img, coords)
+
         var tileset = img ? 'mapbox.streets-satellite' : 'mapbox.terrain-rgb';//
         var res = img ? '@2x.png' :'@2x.pngraw';
 
@@ -396,6 +436,7 @@
 
         updater.postMessage([zoom,corners])
 
+        setHash()
 
     }
 
@@ -455,7 +496,7 @@
                 tilesToGet--
                     finished++
 
-                // scene.remove(placeholder)
+                scene.remove(placeholder)
                 plane.visible=true
 
                 if (tilesToGet===0) {
@@ -475,8 +516,8 @@
 
         geometry.attributes.position.array = new Float32Array(data);
 
-        // var placeholder = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({wireframe:true,color:0x999999}));
-        // scene.add(placeholder);
+        var placeholder = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({wireframe:true,color:0x999999}));
+        scene.add(placeholder);
 
         var plane = new THREE.Mesh(geometry, material);
 
@@ -489,11 +530,11 @@
 
     var zoom = getZoom();
 
-// function toggleElevation(){
-//     inspectElevation = !inspectElevation
-//     var className = inspectElevation ? 'elev' : ''
-//     document.querySelector('#webgl').className = className;
-// }
+function toggleElevation(){
+    inspectElevation = !inspectElevation
+    var className = inspectElevation ? 'elev' : ''
+    document.querySelector('#webgl').className = className;
+}
 function setCenter(lnglat){
     var pxCoords = project(lnglat)
     camera.position.x = pxCoords.x;
