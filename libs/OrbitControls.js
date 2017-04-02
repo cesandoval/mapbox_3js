@@ -403,8 +403,11 @@
 		var state = STATE.NONE;
 
 
-        // set start position
-        setView(this,location.hash)
+		// defined controls global
+		window.controls = this
+    
+    // set start position
+    setView(this, location.hash)
 
 
 		// for reset
