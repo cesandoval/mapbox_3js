@@ -105,7 +105,32 @@ function resolveSeams(data, neighborTiles, [z,x,y]){
 }
 
 
+function setHash(){
+
+    var lngLat = 
+    [roundTo(getZoom(),4)]
+    .concat(getCenter().reverse());
+
+    lngLat
+    .push(-deradicalize(controls.getAzimuthalAngle()),deradicalize(controls.getPolarAngle()))
+
+    hash= slashify(lngLat)
+    // var target = [controls.target.x, controls.target.z];
+    // var camera = [controls.object.position.x,controls.object.position.z, controls.object.position.y]
+    // var hash = target.concat(camera);
+    // hash = slashify(hash.map(function(num){return parseFloat(num).toFixed(4)}));
+    location.hash = (hash);
+
+    var lngLat = getCenter();
+
+}
+
 function setView(controls,location){
+
+    console.log('setView()')
+    // console.log(controls)
+    // console.log(window.controls)
+
     var hash = location
         .replace('#','')
         .split('/').map(
@@ -118,8 +143,13 @@ function setView(controls,location){
     if (hash.length === 5){
         [zoom, lat, lng, bearing, pitch] = hash
 
-        lat = '40.7128';
-        lng = '-74.0059';
+        console.log(hash)
+
+        // for test
+        // lat = '25.0380733'
+        // lng = '121.5419471'
+        // console.log(lat,lng)
+
         var pxCoords = project([lng,lat]);
         controls.target.copy(pxCoords);
 
@@ -154,6 +184,43 @@ function setView(controls,location){
         controls.object.position.copy(c)
     }
 }
+
+
+function setViewPWD(control, {zoom, lat, lng, bearing, pitch}){
+
+    // var hash = location
+    //     .replace('#','')
+    //     .split('/').map(
+    //         function(str){
+    //             return parseFloat(str)
+    //         }
+    //     );
+
+    // if (hash.length === 5){
+        // [zoom, lat, lng, bearing, pitch] = hash
+
+        // let controls = window.controls
+        console.log('setViewPWD()')
+
+        console.log(controls)
+          
+        console.log(lat,lng)
+
+        var pxCoords = project([lng,lat]);
+        controls.target.copy(pxCoords);
+
+        var distance = Math.pow(0.5,(zoom-4))*12000;
+        bearing = radicalize(bearing);
+        pitch = radicalize(pitch);
+        var c={};
+        c.x = pxCoords.x-Math.sin(bearing)*Math.sin(pitch)*distance;
+        c.z = pxCoords.z+Math.cos(bearing)*Math.sin(pitch)*distance;
+
+        c.y = Math.cos(pitch)*distance
+        controls.object.position.copy(c)
+    // }
+}
+
 function radicalize(degrees){
     return 2*Math.PI*degrees/360
 }

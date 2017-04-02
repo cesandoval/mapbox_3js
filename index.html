@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>3JS-Mapbox</title>
-    <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+    <!-- <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' /> -->
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+<!-- <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' /> -->
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <style>
     *{
@@ -165,12 +165,58 @@
 <div id='compass' onclick='updateCompass(true)'>
     <img src='assets/compass.svg' width='28'>
 </div>
+
+<div id="vc">
+    <p>zoom</p>
+        <input type="text" name="zoom" v-model="zoom">
+    <p>lat</p>
+        <input type="text" name="lat" v-model="lat">
+    <p>lng</p>
+        <input type="text" name="lng" v-model="lng">
+    <p>bearing</p>
+        <input type="text" name="bearing" v-model="bearing">
+    <p>pitch</p>
+        <input type="text" name="pitch" v-model="pitch">
+    <br>
+    <br>
+    <button @click="move"> Move </button>
+</div>
+
 <script src="libs/sm.js" note='THIS WAS MODIFIED TO PROJECT TO DECIMAL PIXELS'></script>
 
 <script src= 'libs/utilities.js'></script>
 <script src="libs/three.min.js"></script>
 <script src= 'libs/app.js'></script>
 <script src="libs/OrbitControls.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<script type="text/javascript">
+    
+new Vue({
+    el:'#vc',
+    data(){
+        return{
+            zoom:'16',
+            lat:'25',
+            lng:'121',
+            bearing:'-12',
+            pitch:'0.0001',
+        }
+    },
+    methods:{
+        move(){
+            // [zoom, lat, lng, bearing, pitch] = ['13.4851','25.0381','121.5419','-12.7559','0.0001']
+            [zoom, lat, lng, bearing, pitch] = [this.zoom, this.lat, this.lng, this.bearing, this.pitch]
+
+            let path = {zoom, lat, lng, bearing, pitch}
+            // console.log(controls)
+            setViewPWD(controls, path)
+        },
+    },
+})
+
+</script>
+
 
 <script>
     debugMode = false
@@ -228,6 +274,9 @@
 
     var elevReading = document.getElementById('elevation');
     document.getElementById('webgl').addEventListener('mousemove', function(e){
+
+        console.log('mousemove')
+
         if (!inspectElevation) return;
         var xy = [e.clientX, e.clientY];
 
@@ -338,6 +387,7 @@
 
         updater.postMessage([zoom,corners])
 
+        setHash()
 
     }
 
@@ -430,6 +480,8 @@
 //     document.querySelector('#webgl').className = className;
 // }
 function setCenter(lnglat){
+    console.log('setCenter')
+
     var pxCoords = project(lnglat)
     camera.position.x = pxCoords.x;
     camera.position.z = pxCoords.z;
@@ -461,6 +513,26 @@ function updateTileVisibility(){
     }
 }
 </script>
+
+<style type="text/css">
+    #vc {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 20000;
+    }
+
+    #vc > *{
+        margin: 0.5em;
+    }
+
+    #vc p{
+        color: white;
+        text-shadow: black 2px 2px 3px;
+        font-size: large;
+
+    }
+</style>
 
 </body>
 

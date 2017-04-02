@@ -403,10 +403,12 @@
 		var state = STATE.NONE;
 
 
-        // set start position
-		// THE START LOCATION WILL COME FROM THE CENTROID OF THE VOXEL
+		// defined controls global
+		window.controls = this
 		console.log(location)
         setView(this,location.hash)
+		// THE START LOCATION WILL COME FROM THE CENTROID OF THE VOXEL
+        // set start position
 
 
 		// for reset
